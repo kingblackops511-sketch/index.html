@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bobo &lt;3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .scene {
+      text-align: center;
+      position: relative;
+      padding: 40px 20px 60px;
+    }
+
+    .title {
+      font-size: 2.4rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 25px;
+      color: #ffffff;
+      text-shadow:
+        0 0 10px rgba(255, 255, 255, 1),
+        0 0 25px rgba(255, 255, 255, 0.8),
+        0 0 40px rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
+    }
+
+    body.loaded .title {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .title span.heart {
+      color: #ffffff;
+      text-shadow:
+        0 0 10px rgba(255, 255, 255, 1),
+        0 0 25px rgba(255, 255, 255, 0.9),
+        0 0 45px rgba(255, 255, 255, 0.8);
+    }
+
+    .bouquet {
+      position: relative;
+      width: 260px;
+      height: 260px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.7));
+    }
+
+    .flower {
+      position: absolute;
+      bottom: 40px;
+      width: 80px;
+      height: 160px;
+      transform-origin: bottom center;
+      opacity: 0;
+      transform: translateY(30px) scale(0.9);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+      animation: sway 6s ease-in-out infinite alternate;
+      image-rendering: pixelated;
+    }
+
+    body.loaded .flower {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .flower-1 { left: 20px; }
+    .flower-2 { left: 90px; }
+    .flower-3 { right: 20px; }
+
+    body.loaded .flower-1 { transition-delay: 0.1s; }
+    body.loaded .flower-2 { transition-delay: 0.25s; }
+    body.loaded .flower-3 { transition-delay: 0.4s; }
+
+    .stem {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      height: 120px;
+      background: #888;
+      box-shadow:
+        0 0 8px rgba(255, 255, 255, 0.4),
+        0 0 16px rgba(255, 255, 255, 0.2);
+      transform: translateX(-50%);
+    }
+
+    .head {
+      position: absolute;
+      bottom: 110px;
+      left: 50%;
+      width: 72px;
+      height: 72px;
+      transform: translateX(-50%);
+    }
+
+    .pixel {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ffffff;
+      box-shadow:
+        0 0 10px rgba(255, 255, 255, 1),
+        0 0 24px rgba(255, 255, 255, 0.9),
+        0 0 40px rgba(255, 255, 255, 0.8);
+    }
+
+    .petal-1 {
+      left: 26px;
+      top: 4px;
+    }
+
+    .petal-2 {
+      left: 4px;
+      top: 26px;
+    }
+
+    .petal-3 {
+      right: 4px;
+      top: 26px;
+    }
+
+    .petal-4 {
+      left: 26px;
+      bottom: 4px;
+    }
+
+    .center {
+      left: 26px;
+      top: 26px;
+      background: #dcdcdc;
+    }
+
+    .wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 140px;
+      height: 70px;
+      transform: translateX(-50%);
+      border-radius: 6px;
+      background: #111;
+      box-shadow:
+        0 0 16px rgba(255, 255, 255, 0.2),
+        0 0 32px rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 0;
+      background: #ffffff;
+      box-shadow:
+        0 0 10px rgba(255, 255, 255, 1),
+        0 0 24px rgba(255, 255, 255, 0.9);
+      opacity: 0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      animation: orbFloat 6s linear infinite;
+    }
+
+    @keyframes sway {
+      0%   { transform: translateY(0) scale(1) rotate(-2deg); }
+      50%  { transform: translateY(-4px) scale(1.03) rotate(2deg); }
+      100% { transform: translateY(0) scale(1) rotate(-1deg); }
+    }
+
+    @keyframes orbFloat {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) scale(0.4);
+      }
+      10% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+        transform: translate3d(0, -80px, 0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate3d(0, -90px, 0) scale(1.1);
+      }
+    }
+
+    .audio-btn {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+
+    .audio-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    @media (max-width: 480px) {
+      .title { font-size: 2rem; }
+      .bouquet { transform: scale(0.9); }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <h1 class="title">Bobo <span class="heart">&lt;3</span></h1>
+
+    <div class="bouquet">
+      <div class="flower flower-1">
+        <div class="stem"></div>
+        <div class="head">
+          <div class="pixel petal-1"></div>
+          <div class="pixel petal-2"></div>
+          <div class="pixel petal-3"></div>
+          <div class="pixel petal-4"></div>
+          <div class="pixel center"></div>
+        </div>
+      </div>
+
+      <div class="flower flower-2">
+        <div class="stem"></div>
+        <div class="head">
+          <div class="pixel petal-1"></div>
+          <div class="pixel petal-2"></div>
+          <div class="pixel petal-3"></div>
+          <div class="pixel petal-4"></div>
+          <div class="pixel center"></div>
+        </div>
+      </div>
+
+      <div class="flower flower-3">
+        <div class="stem"></div>
+        <div class="head">
+          <div class="pixel petal-1"></div>
+          <div class="pixel petal-2"></div>
+          <div class="pixel petal-3"></div>
+          <div class="pixel petal-4"></div>
+          <div class="pixel center"></div>
+        </div>
+      </div>
+
+      <div class="wrapper"></div>
+    </div>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <button class="audio-btn" id="audio-toggle">
+    ▶️ Play music
+  </button>
+
+  <script>
+    window.addEventListener("load", function () {
+      document.body.classList.add("loaded");
+      createOrbs();
+    });
+
+    function createOrbs() {
+      const bouquet = document.querySelector(".bouquet");
+      const rect = bouquet.getBoundingClientRect();
+      const orbCount = 18;
+
+      for (let i = 0; i < orbCount; i++) {
+        const orb = document.createElement("div");
+        orb.className = "glow-orb";
+
+        const startX = Math.random() * rect.width - rect.width / 2;
+        const delay = Math.random() * 6;
+
+        orb.style.left = "50%";
+        orb.style.bottom = "40px";
+        orb.style.transform = `translateX(${startX}px)`;
+        orb.style.animationDelay = `${delay}s`;
+
+        bouquet.appendChild(orb);
+      }
+    }
+
+    const audio = document.getElementById("bg-music");
+    const btn   = document.getElementById("audio-toggle");
+
+    btn.addEventListener("click", async () => {
+      try {
+        if (audio.paused) {
+          await audio.play();
+          btn.textContent = "⏸ Pause music";
+        } else {
+          audio.pause();
+          btn.textContent = "▶️ Play music";
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  </script>
+</body>
+</html>
