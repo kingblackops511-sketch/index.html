@@ -122,7 +122,6 @@
       border: 1px solid rgba(255,255,255,0.25);
     }
 
-    /* زر تشغيل الأغنية — أسود × أبيض فقط */
     .play-btn {
       position: absolute;
       bottom: -90px;
@@ -194,14 +193,15 @@
 
       <div class="wrapper"></div>
 
-      <!-- زر التشغيل الجديد -->
       <button class="play-btn" id="play-btn">▶️ Play Song</button>
 
     </div>
   </div>
 
+  <!-- نحاول نلقط أي واحد فيهم: song.mp3 أو song.mp3.mp3 -->
   <audio id="bg-music" loop muted>
     <source src="song.mp3" type="audio/mpeg">
+    <source src="song.mp3.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -215,7 +215,9 @@
     btn.addEventListener("click", () => {
       if (audio.paused) {
         audio.muted = false;
-        audio.play();
+        audio.play().catch(err => {
+          console.log("Play error:", err);
+        });
         btn.textContent = "⏸ Pause Song";
       } else {
         audio.pause();
@@ -226,5 +228,4 @@
 
 </body>
 </html>
-
 
