@@ -2,119 +2,152 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Bobo <3 – Pixel Flowers</title>
+  <title>Bobo &lt;3</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: sans-serif;
-      background: #000;
-      color: #fff;
       min-height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      background: #000;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #fff;
       overflow: hidden;
     }
 
     .scene {
-      position: relative;
       text-align: center;
-      padding: 40px 20px;
+      position: relative;
+      padding: 40px 20px 60px;
     }
 
     .title {
       font-size: 2.4rem;
-      margin-bottom: 30px;
-      text-shadow: 0 0 10px #fff, 0 0 25px #fff;
+      letter-spacing: 0.08em;
+      margin-bottom: 25px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255,255,255,1),
+                   0 0 25px rgba(255,255,255,0.8),
+                   0 0 40px rgba(255,255,255,0.5);
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
     }
 
-    .heart {
-      text-shadow: 0 0 10px #fff, 0 0 30px #fff;
+    body.loaded .title {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .bouquet {
       position: relative;
-      width: 360px;
+      width: 260px;
       height: 260px;
       margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
       filter: drop-shadow(0 0 25px rgba(255,255,255,0.7));
     }
 
     .flower {
       position: absolute;
-      bottom: 70px;
-      width: 120px;
+      bottom: 40px;
+      width: 80px;
       height: 160px;
+      transform-origin: bottom center;
+      opacity: 0;
+      transform: translateY(30px) scale(0.9);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+      animation: sway 6s ease-in-out infinite alternate;
+      image-rendering: pixelated;
     }
 
-    .flower--left { left: 0; }
-    .flower--center { left: 120px; }
-    .flower--right { right: 0; }
+    body.loaded .flower { opacity: 1; transform: translateY(0) scale(1); }
 
-    .pixels {
+    .flower-1 { left: 20px; }
+    .flower-2 { left: 90px; }
+    .flower-3 { right: 20px; }
+
+    .stem {
       position: absolute;
+      bottom: 0;
       left: 50%;
-      top: 40px;
-      width: 120px;
+      width: 4px;
       height: 120px;
+      background: #888;
+      transform: translateX(-50%);
+      box-shadow: 0 0 8px #fff7;
+    }
+
+    .head {
+      position: absolute;
+      bottom: 110px;
+      left: 50%;
+      width: 72px;
+      height: 72px;
       transform: translateX(-50%);
     }
 
     .pixel {
       position: absolute;
-      width: 6px;
-      height: 6px;
+      width: 20px;
+      height: 20px;
       background: #fff;
-      box-shadow: 0 0 8px #fff, 0 0 18px #fff;
+      box-shadow:
+        0 0 10px rgba(255,255,255,1),
+        0 0 24px rgba(255,255,255,0.9),
+        0 0 40px rgba(255,255,255,0.8);
     }
 
-    .stem {
-      position: absolute;
-      left: 50%;
-      bottom: 0;
-      transform: translateX(-50%);
-      width: 10px;
-      height: 80px;
-      background: #aaa;
-      box-shadow: 0 0 12px #fff;
-    }
+    .petal-1 { left: 26px; top: 4px; }
+    .petal-2 { left: 4px; top: 26px; }
+    .petal-3 { right: 4px; top: 26px; }
+    .petal-4 { left: 26px; bottom: 4px; }
+    .center  { left: 26px; top: 26px; background: #dcdcdc; }
 
     .wrapper {
       position: absolute;
       bottom: 0;
       left: 50%;
-      transform: translateX(-50%);
-      width: 220px;
+      width: 140px;
       height: 70px;
+      transform: translateX(-50%);
+      border-radius: 6px;
       background: #111;
-      border-radius: 8px;
-      border: 1px solid #444;
-      box-shadow: 0 0 25px rgba(255,255,255,0.25);
+      box-shadow: 0 0 32px rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.25);
     }
 
+    /* زر تشغيل الأغنية — أسود × أبيض فقط */
     .play-btn {
       position: absolute;
       bottom: -90px;
       left: 50%;
       transform: translateX(-50%);
-      background: #fff;
-      color: #000;
+      padding: 14px 32px;
       font-size: 1.3rem;
-      padding: 14px 30px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
       font-weight: bold;
-      box-shadow: 0 0 20px #fff;
+      background: #000;
+      color: #fff;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      cursor: pointer;
       transition: 0.2s ease;
     }
 
     .play-btn:hover {
-      transform: translateX(-50%) scale(1.08);
-      box-shadow: 0 0 30px #fff;
+      transform: translateX(-50%) scale(1.05);
+      background: #111;
+    }
+
+    @keyframes sway {
+      0% { transform: translateY(0) scale(1) rotate(-2deg); }
+      50% { transform: translateY(-4px) scale(1.03) rotate(2deg); }
+      100% { transform: translateY(0) scale(1) rotate(-1deg); }
     }
   </style>
 </head>
@@ -126,24 +159,43 @@
 
     <div class="bouquet">
 
-      <div class="flower flower--left">
-        <div class="pixels" data-flower="left"></div>
+      <div class="flower flower-1">
         <div class="stem"></div>
+        <div class="head">
+          <div class="pixel petal-1"></div>
+          <div class="pixel petal-2"></div>
+          <div class="pixel petal-3"></div>
+          <div class="pixel petal-4"></div>
+          <div class="pixel center"></div>
+        </div>
       </div>
 
-      <div class="flower flower--center">
-        <div class="pixels" data-flower="center"></div>
+      <div class="flower flower-2">
         <div class="stem"></div>
+        <div class="head">
+          <div class="pixel petal-1"></div>
+          <div class="pixel petal-2"></div>
+          <div class="pixel petal-3"></div>
+          <div class="pixel petal-4"></div>
+          <div class="pixel center"></div>
+        </div>
       </div>
 
-      <div class="flower flower--right">
-        <div class="pixels" data-flower="right"></div>
+      <div class="flower flower-3">
         <div class="stem"></div>
+        <div class="head">
+          <div class="pixel petal-1"></div>
+          <div class="pixel petal-2"></div>
+          <div class="pixel petal-3"></div>
+          <div class="pixel petal-4"></div>
+          <div class="pixel center"></div>
+        </div>
       </div>
 
       <div class="wrapper"></div>
 
-      <button class="play-btn" id="play">▶️ تشغيل الأغنية</button>
+      <!-- زر التشغيل الجديد -->
+      <button class="play-btn" id="play-btn">▶️ Play Song</button>
 
     </div>
   </div>
@@ -153,53 +205,26 @@
   </audio>
 
   <script>
-    function drawFlowerPixels(container) {
-      const size = 18;
-      const pixelSize = 6;
-      const center = (size - 1) / 2;
-
-      for (let y = 0; y < size; y++) {
-        for (let x = 0; x < size; x++) {
-          const dx = x - center;
-          const dy = y - center;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-
-          const isCenter = dist <= 2.2;
-          const isPetal = dist > 3.2 && dist < 6.5;
-          const lobes =
-            (Math.abs(dx) < 2 && dy < -1 && dy > -7) ||
-            (Math.abs(dx) < 2 && dy > 1 && dy < 7)  ||
-            (Math.abs(dy) < 2 && dx < -1 && dx > -7) ||
-            (Math.abs(dy) < 2 && dx > 1 && dx < 7);
-
-          if (!(isCenter || isPetal || lobes)) continue;
-
-          const px = document.createElement("div");
-          px.className = "pixel";
-          px.style.left = (x * pixelSize) + "px";
-          px.style.top  = (y * pixelSize) + "px";
-          container.appendChild(px);
-        }
-      }
-    }
-
-    document.querySelectorAll(".pixels").forEach(el => drawFlowerPixels(el));
+    window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
+    });
 
     const audio = document.getElementById("bg-music");
-    const btn   = document.getElementById("play");
+    const btn   = document.getElementById("play-btn");
 
     btn.addEventListener("click", () => {
       if (audio.paused) {
         audio.muted = false;
         audio.play();
-        btn.textContent = "⏸ إيقاف الأغنية";
+        btn.textContent = "⏸ Pause Song";
       } else {
         audio.pause();
-        btn.textContent = "▶️ تشغيل الأغنية";
+        btn.textContent = "▶️ Play Song";
       }
     });
   </script>
 
 </body>
 </html>
+
 
